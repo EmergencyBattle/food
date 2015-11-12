@@ -1,5 +1,5 @@
 body {
-    background-color: lightgrey;
+    background-color: #0A0A0F;
 	font-family: "Times News Roman", "monospace", Serif;
 	font-size: 0.8em;
 }
@@ -26,12 +26,12 @@ body {
 .dishDesc {
 }
 .dishPrice {
-	background-color: lightgrey;
+	background-color: #D1D1E0;
 	width: 40px;
 	float: right;
 }
 .dishPriceLine {
-	background-color: lightgrey;
+	background-color: #D1D1E0;
 	width: 100%;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -47,7 +47,7 @@ body {
 	margin-top: 10px;
 }
 .priceContainer {
-	background-color: lightgrey;
+	background-color: #D1D1E0;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -68,7 +68,7 @@ body {
 .space {
 }
 .times {
-	background-color: lightgrey;
+	background-color: #D1D1E0;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;

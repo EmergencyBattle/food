@@ -619,6 +619,211 @@ function printOut_noWork($cli = true) {
 	}
 }
 
+
+/********************************************************************************************************************************************************************************************/
+function scraping_izakaya_koi() {
+    // create HTML DOM
+    $html = file_get_html('http://www.koi.se/meny');
+	// get prices
+    $item['day_1'] = $html->find('div[class="media-body"]',0)->find('h4', 0)->plaintext;
+    $item['menutext_1'] = $html->find('div[class="media-body"]',0)->find('p', 0)->plaintext;
+    $item['price_1'] = $html->find('div[class="media-body"]',0)->find('div[class="price"]',0)->plaintext;
+    
+    $item['day_2'] = $html->find('div[class="media-body"]',1)->find('h4', 0)->plaintext;
+    $item['menutext_2'] = $html->find('div[class="media-body"]',1)->find('p', 0)->plaintext;
+    $item['price_2'] = $html->find('div[class="media-body"]',1)->find('div[class="price"]',0)->plaintext;
+    
+    $item['day_3'] = $html->find('div[class="media-body"]',2)->find('h4', 0)->plaintext;
+    $item['menutext_3'] = $html->find('div[class="media-body"]',2)->find('p', 0)->plaintext;
+    $item['price_3'] = $html->find('div[class="media-body"]',2)->find('div[class="price"]',0)->plaintext;
+    
+    $item['day_4'] = $html->find('div[class="media-body"]',3)->find('h4', 0)->plaintext;
+    $item['menutext_4'] = $html->find('div[class="media-body"]',3)->find('p', 0)->plaintext;
+    $item['price_4'] = $html->find('div[class="media-body"]',3)->find('div[class="price"]',0)->plaintext;
+    
+    $item['day_5'] = $html->find('div[class="media-body"]',4)->find('h4', 0)->plaintext;
+    $item['menutext_5'] = $html->find('div[class="media-body"]',4)->find('p', 0)->plaintext;
+    $item['price_5'] = $html->find('div[class="media-body"]',4)->find('div[class="price"]',0)->plaintext;
+    
+    /*****************************************************************************************************/
+    
+    $item['cartemenu_1'] = $html->find('div[class="media-body"]',5)->find('h4', 0)->plaintext;
+    $item['cartemenutext_1'] = $html->find('div[class="media-body"]',5)->find('p', 0)->plaintext;
+    $item['carteprice_1'] = $html->find('div[class="media-body"]',5)->find('div[class="price"]',0)->plaintext;
+    
+    $item['cartemenu_2'] = $html->find('div[class="media-body"]',6)->find('h4', 0)->plaintext;
+    $item['cartemenutext_2'] = $html->find('div[class="media-body"]',6)->find('p', 0)->plaintext;
+    $item['carteprice_2'] = $html->find('div[class="media-body"]',6)->find('div[class="price"]',0)->plaintext;
+    
+    $item['cartemenu_3'] = $html->find('div[class="media-body"]',7)->find('h4', 0)->plaintext;
+    $item['cartemenutext_3'] = $html->find('div[class="media-body"]',7)->find('p', 0)->plaintext;
+    $item['carteprice_3'] = $html->find('div[class="media-body"]',7)->find('div[class="price"]',0)->plaintext;
+    
+    $item['cartemenu_4'] = $html->find('div[class="media-body"]',7)->find('h4', 0)->plaintext;
+    $item['cartemenutext_4'] = $html->find('div[class="media-body"]',7)->find('p', 0)->plaintext;
+    $item['carteprice_4'] = $html->find('div[class="media-body"]',7)->find('div[class="price"]',0)->plaintext;
+    
+    $item['cartemenu_5'] = $html->find('div[class="media-body"]',8)->find('h4', 0)->plaintext;
+    $item['cartemenutext_5'] = $html->find('div[class="media-body"]',8)->find('p', 0)->plaintext;
+    $item['carteprice_5'] = $html->find('div[class="media-body"]',8)->find('div[class="price"]',0)->plaintext;
+    
+    /*****************************************************************************************************/
+   
+    //$item['prices'] = $html->find('div[id="orkanen"]',0)->find('div[class="col-md-8"]',0)->find('p', 0)->plaintext;
+    
+    // sallad
+    //$item['soupAndSallad'] = $html->find('div[id="orkanen"]',0)->find('div[class="col-md-8"]',0)->find('p', 1)->plaintext;
+	$ret[] = $item;
+	
+    /* get Mon-Fri 
+	for ($x = 2; $x <= 12; $x+=2) {
+		$item['day'] = $html->find('div[id="orkanen"]',0)->find('div[class="col-md-8"]',0)->find('p', $x)->plaintext;
+		$item['menu'] = $html->find('div[id="orkanen"]',0)->find('div[class="col-md-8"]',0)->find('p', $x+1)->plaintext;
+		$ret[] = $item;
+    }*/
+    
+    
+    
+    // clean up memory
+    $html->clear();
+    unset($html);
+
+    return $ret;
+}
+
+function printOut_izakaya_koi($weekday = -1, $cli = true) {
+	$ret = scraping_izakaya_koi();
+	
+	// show results on cli
+	$countDays = 0;
+	if ($cli) {
+		echo "IZAKAYA KOI\n";
+		echo "*********\n";
+		foreach($ret as $v) {
+			if($countDays == 0) {
+                            
+				echo $v['day_1']."\n";
+                                echo $v['menutext']."\n";
+                                echo $v['price']."\n";
+				//echo $v['prices']."\n";
+				//echo $v['soupAndSallad']."\n";
+				echo "\n----------------------\n";
+			}
+			if($countDays > 0 && $countDays < 6  && $weekday == -1 || $weekday == $countDays - 1) {
+				//echo $v['day']."\n----------------------\n";
+				//echo $v['menu'];
+				//echo "\n----------------------\n";
+			}
+			if($countDays == 6) {
+				// nothing to do in this case
+			}
+			$countDays++;
+		}
+	} else {
+		echo "<div class='restaurantContainer'>";
+		echo "<div class='restaurantName'>IZAKAYA KOI</div>";
+		foreach($ret as $v) {
+			if($countDays == 0) {
+				switch ($weekday + 1) {
+					case "1":
+				 echo "<div class='priceContainer'><div class='priceListTitle'>".$v['day_1']."</div>";
+				 echo "<div class='dishPriceLine'>".$v['price_1']."</div>";
+				 echo "<div class='dishDesc'>".$v['menutext_1']."</div>";
+                                
+
+                 echo "</div>";
+                 echo "</br>";
+						break;
+					
+					case "2":
+					                    echo "<div class='priceContainer'><div class='priceListTitle'>".$v['day_2']."</div>";
+				echo "<div class='dishPriceLine'>".$v['price_2']."</div>";
+				echo "<div class='dishDesc'>".$v['menutext_2']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                    break;
+
+                case "3":
+                                echo "<div class='priceContainer'><div class='priceListTitle'>".$v['day_3']."</div>";
+				echo "<div class='dishPriceLine'>".$v['price_3']."</div>";
+				echo "<div class='dishDesc'>".$v['menutext_3']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                break;
+
+                case "4":
+                                echo "<div class='priceContainer'><div class='priceListTitle'>".$v['day_4']."</div>";
+				echo "<div class='dishPriceLine'>".$v['price_4']."</div>";
+				echo "<div class='dishDesc'>".$v['menutext_4']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                break;
+
+                case "5":
+                                echo "<div class='priceContainer'><div class='priceListTitle'>".$v['day_5']."</div>";
+				echo "<div class='dishPriceLine'>".$v['price_5']."</div>";
+				echo "<div class='dishDesc'>".$v['menutext_5']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                break;
+					default:
+						echo "no days";
+				
+                                            break;
+				}
+                                
+                                echo "<div class='dishDesc'><div class='priceListTitle'>".$v['cartemenu_1']."".$v['carteprice_1']."</div>";
+				echo "<div class='dishDesc'>".$v['cartemenutext_1']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                                
+                                echo "<div class='dishDesc'><div class='priceListTitle'>".$v['cartemenu_2']."".$v['carteprice_2']."</div>";
+				echo "<div class='dishDesc'>".$v['cartemenutext_2']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                                
+                                echo "<div class='dishDesc'><div class='priceListTitle'>".$v['cartemenu_3']."".$v['carteprice_3']."</div>";
+				echo "<div class='dishDesc'>".$v['cartemenutext_3']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                                
+                                echo "<div class='dishDesc'><div class='priceListTitle'>".$v['cartemenu_4']."".$v['carteprice_4']."</div>";
+				echo "<div class='dishDesc'>".$v['cartemenutext_4']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+                                
+                                echo "<div class='dishDesc'><div class='priceListTitle'>".$v['cartemenu_5']."".$v['carteprice_5']."</div>";
+				echo "<div class='dishDesc'>".$v['cartemenutext_5']."</div>";
+
+				echo "</div>";
+                                echo "</br>";
+		
+			}
+			echo "<div class='dayContainer'>";			
+			if($countDays > 0 && $countDays < 6  && $weekday == -1 || $weekday == $countDays - 1) {
+				echo "<div class='day'>".$v['day']."</div>";
+				echo "<div class='dishDesc'>".$v['menu']."</div>";
+			}
+			echo "</div>";
+			if($countDays == 6) {
+				// nothing to do in this case
+			}
+			$countDays++;
+		}
+		echo "</div>";
+	}
+}
+
+/*********************************************************************************************************************************************************************************************************/
+
 function getDayOfWeek($pTimezone)
 {
 
@@ -659,6 +864,8 @@ if ($dayOfWeek > 4 || $dayOfWeek < 0) {
 	printOut_valfarden($dayOfWeek, false);
 	echo "</div><div class='column'>";
 	printOut_thapthim($dayOfWeek, false);
+        	echo "</div><div class='column'>";
+	printOut_izakaya_koi($dayOfWeek, false);
 }
 
 echo "</div></div>";
